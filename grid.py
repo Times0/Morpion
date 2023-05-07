@@ -14,7 +14,6 @@ class Grid:
         :param pos:
         :return: None
         """
-        my_surface = float()
         j = int((pos[0] - POS0[0]) // CASE_LENGTH)
         i = int((pos[1] - POS0[1]) // CASE_LENGTH)
 
@@ -54,7 +53,6 @@ class Grid:
 
     def draw_data(self, win):
         e = WINDOW_WIDTH // 50
-        a = 50
         for i in range(3):
             for j in range(3):
                 if self.data[i][j] == 1:

@@ -1,8 +1,9 @@
-from AI import Edouard
+import threading
+
+from AI import EdouardLeBot
 from Button import Button
 from fonctions import *
 from grid import *
-import threading
 import multiprocessing
 
 
@@ -13,7 +14,7 @@ class Game:
 
         self.win = win
         self.grid = Grid()
-        self.bot = Edouard()
+        self.bot = EdouardLeBot()
         self.ai_turn = 2
         self.j = [None, "human", "bot"]
 
@@ -26,9 +27,7 @@ class Game:
 
     def run(self):
         hasToThink = True
-        manager = multiprocessing.Manager()  # used by multiprocessing
-        return_list = manager.list()
-        return_list.append(None)
+        return_list = [None]
 
         self.running = True
         clickedOnGrid = False
@@ -68,20 +67,18 @@ class Game:
                         print(game_state(self.grid.data))
                 elif self.j[self.grid.turn] == "bot":
                     if hasToThink:
-                        botThinks = multiprocessing.Process(target=self.bot.playwise,
+                        botThinks = threading.Thread(target=self.bot.playwise,
                                                             args=(self.grid.data, self.grid.turn, return_list))
                         botThinks.start()
                         hasToThink = False
 
                     if return_list[0] is not None:
-                        print("PLAYED")
                         self.grid.played(return_list[0])
                         return_list[0] = None
                         hasToThink = True
                         if game_state(self.grid.data) != 0:
                             self.gameOn = False
                             print(game_state(self.grid.data))
-
             self.draw()
             pygame.display.flip()
         pygame.quit()
@@ -111,4 +108,3 @@ class Game:
         self.running = True
         self.gameOn = True
         self.grid.turn = 1
-
