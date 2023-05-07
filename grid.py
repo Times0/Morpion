@@ -14,7 +14,7 @@ class Grid:
         :param pos:
         :return: None
         """
-
+        my_surface = float()
         j = int((pos[0] - POS0[0]) // CASE_LENGTH)
         i = int((pos[1] - POS0[1]) // CASE_LENGTH)
 
